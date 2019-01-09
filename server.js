@@ -4,18 +4,28 @@ const express =require('express');
 // from so: MongoClient in your example is just a Nodejs library that handles connecting to and interacting with a MongoDB database. 
 const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
+// require that new db you set up
+const db =require('./config/db');
 
 // initialize app as an instance of Express, the framework
 const app = express();
 
 const port = 8000;
 
-// import new routes for use
-// empty object is cuz there's no db set up yet
-require('./app/routes')(app, {});
+// express can't process URL encoded forms
+// so get body-parser up n runnin
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// to get server running, tell app to listen for HTTP requests
-app.listen(port, () => {
-	console.log('we are live on port ' + port);
-}); // run npm run dev to see if it worked!
+// NOW CONNECT YOUR NEW DB
+MongoClient.CONNECT(DB.URL, (ERR, database) => {
+	if (err)  return console.log(err);
+	// import new routes for use
+	db = database.db('notable-demo');
+	require('./app/routes')(app, db);
 
+	// to get server running, tell app to listen for HTTP requests
+	app.listen(port, () => {
+		console.log('we are live on port ' + port);
+	}); // run npm run dev to see if it worked!
+
+});
