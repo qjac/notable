@@ -38,4 +38,22 @@ module.exports = function(app, db) {
 			}
 		});
 	});
+
+	// update
+	app.put('/notes/:id', (req, res) => {
+		const id =req.params.id;
+
+		console.log(req);
+		console.log(req.params);
+
+		const details = { '_id': new ObjectID(id) };
+		const note = { text: req.body.text, title: req.body.title};
+		db.collection('notes').update(details, note, (err, result) => {
+			if (err) {
+				res.send({'error': 'An error has occured. Could not update.' });
+			} else {
+				res.send(note);
+			}
+		});
+	});
 };
