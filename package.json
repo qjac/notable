@@ -22,7 +22,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "mongodb": "^2.2.16"
+    "mongodb": "^5.7.0"
   },
   "devDependencies": {
     "eslint": "^5.12.0",
